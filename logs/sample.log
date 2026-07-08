@@ -10,3 +10,9 @@
 2026-07-08 12:02:30 CRITICAL: Out of memory — allocator returned NULL
 2026-07-08 12:03:00 INFO: Graceful shutdown initiated
 2026-07-08 17:05:00 ERROR: test alert from log monitor
+2026-07-08 17:10:00 ERROR: Database connection failed
+2026-07-08 17:10:04 INFO: User logged in successfully
+2026-07-08 17:10:02 FATAL: Application crashed unexpectedly
+2026-07-08 17:10:03 error: lowercase error test
+2026-07-08 17:10:03 error: lowercase error test
+2026-07-08 17:10:05 WARNING: Disk usage at 85%
