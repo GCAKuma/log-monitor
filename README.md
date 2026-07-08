@@ -134,4 +134,5 @@ docker run --rm \
 
 This project is open source and available under the [MIT License](https://opensource.org/licenses/MIT).
 
-test the github work
+Test the GitHub work
+Send an online message to confirm that the files have been fetched correctly.
