@@ -133,8 +133,3 @@ docker run --rm \
 ## 📝 License
 
 This project is open source and available under the [MIT License](https://opensource.org/licenses/MIT).
-
-Test the GitHub work
-Send an online message to confirm that the files have been fetched correctly.
-
-new change form VS code

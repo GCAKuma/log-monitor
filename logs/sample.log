@@ -9,3 +9,4 @@
 2026-07-08 12:01:05 INFO: Retrying write operation…
 2026-07-08 12:02:30 CRITICAL: Out of memory — allocator returned NULL
 2026-07-08 12:03:00 INFO: Graceful shutdown initiated
+2026-07-08 17:05:00 ERROR: test alert from log monitor
