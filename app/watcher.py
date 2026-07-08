@@ -45,38 +45,38 @@ def tail_log(
       2. Seeks to the end (ignores historical content).
       3. Polls for new content every *poll_interval* seconds.
       4. Handles log rotation (file shrinks / is replaced).
+
+    NOTE: The file is opened and closed on each poll cycle so that
+    other processes (or manual edits) can write to it on Windows.
     """
     wait_for_file(filepath, poll_interval)
 
-    with open(filepath, "r", encoding="utf-8", errors="replace") as fh:
-        # Jump to end — we only care about NEW lines
-        fh.seek(0, os.SEEK_END)
+    # Get initial file size — we only care about NEW lines added after this point
+    position = os.path.getsize(filepath)
 
-        while True:
-            line = fh.readline()
+    while True:
+        try:
+            current_size = os.path.getsize(filepath)
+        except OSError:
+            # File was deleted — wait for it to come back
+            print("⚠️  Log file removed. Waiting for it to reappear…")
+            wait_for_file(filepath, poll_interval)
+            position = 0
+            continue
 
-            if not line:
-                # No new data — check for log rotation (file got smaller)
-                try:
-                    current_size = os.path.getsize(filepath)
-                except OSError:
-                    # File was deleted — wait for it to come back
-                    print("⚠️  Log file removed. Waiting for it to reappear…")
-                    fh.close()
-                    wait_for_file(filepath, poll_interval)
-                    # Re-open from the generator (recursive-ish via new call)
-                    yield from tail_log(filepath, keywords, poll_interval)
-                    return
+        if current_size < position:
+            # File was truncated / rotated — start from the beginning
+            print("🔄 Log file rotated. Re-reading from start.")
+            position = 0
 
-                if current_size < fh.tell():
-                    # File was truncated / rotated — start from the beginning
-                    print("🔄 Log file rotated. Re-reading from start.")
-                    fh.seek(0)
-                    continue
-
-                time.sleep(poll_interval)
-                continue
-
-            line = line.rstrip("\n\r")
-            if line and contains_keywords(line, keywords):
-                yield line
+        if current_size > position:
+            # New data available — open briefly, read, then close
+            with open(filepath, "r", encoding="utf-8", errors="replace") as fh:
+                fh.seek(position)
+                for line in fh:
+                    line = line.rstrip("\n\r")
+                    if line and contains_keywords(line, keywords):
+                        yield line
+                position = fh.tell()
+        else:
+            time.sleep(poll_interval)
