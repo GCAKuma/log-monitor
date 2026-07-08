@@ -1,0 +1,11 @@
+# ── Sample log file for manual testing ──
+# Append new lines here while main.py is running to see alerts fire.
+
+2026-07-08 12:00:01 INFO: Application started successfully
+2026-07-08 12:00:02 DEBUG: Loading configuration from /etc/app/config.yaml
+2026-07-08 12:00:03 INFO: Connected to database on port 5432
+2026-07-08 12:00:15 WARNING: Slow query detected (2340ms)
+2026-07-08 12:01:00 ERROR: Failed to write to /var/log/app/output.log — Permission denied
+2026-07-08 12:01:05 INFO: Retrying write operation…
+2026-07-08 12:02:30 CRITICAL: Out of memory — allocator returned NULL
+2026-07-08 12:03:00 INFO: Graceful shutdown initiated
